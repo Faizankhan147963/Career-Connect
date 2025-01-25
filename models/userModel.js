@@ -3,11 +3,25 @@ const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
+  lastname: { type: String, required: true }, // Added lastname field
   email: { type: String, unique: true, required: true },
+  mobileNumber: { type: String, required: true }, // Added mobile number field
   password: { type: String, required: true },
-  // Default role to 'job_seeker'
-  role: { type: String, enum: ['job_seeker', 'recruiter', 'admin'], required: true, default: 'job_seeker' },
+  role: { 
+    type: String, 
+    enum: ['job_seeker', 'recruiter', 'admin'], 
+    required: true, 
+    default: 'job_seeker' 
+  }, // Default role to 'job_seeker'
   companyProfile: { type: mongoose.Schema.Types.ObjectId, ref: 'CompanyProfile' }, // Reference to company profile
+
+  // New status field
+  status: { 
+    type: String, 
+    enum: ['active', 'rejected'], 
+    required: true, 
+    default: 'active' 
+  }
 });
 
 // Hash password before saving

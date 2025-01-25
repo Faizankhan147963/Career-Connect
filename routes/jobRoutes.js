@@ -5,15 +5,15 @@ const recruiterOnly = require('../middlewares/recruiterMiddleware'); // Middlewa
 const router = express.Router();
 
 // Create a job listing (Admin and Recruiter)
-router.post('/', adminOnly, recruiterOnly, createJob);
+router.post('/', recruiterOnly, createJob);
 
 // Get all job listings (Admin and Recruiter)
-router.get('/', adminOnly, recruiterOnly, getJobs);
+router.get('/', getJobs);
 
 // Update a job listing (Admin and Recruiter)
-router.put('/:id', adminOnly, recruiterOnly, updateJob);
+router.put('/:id', recruiterOnly, updateJob);
 
 // Delete a job listing (Admin and Recruiter)
-router.delete('/:id', adminOnly, recruiterOnly, deleteJob);
+router.delete('/:id',  recruiterOnly, deleteJob);
 
 module.exports = router;

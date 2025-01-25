@@ -3,22 +3,23 @@ const User = require('../models/userModel');
 // Get all users (Admin only)
 const getUsers = async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await User.find()
     res.status(200).json({ users });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error });
   }
 };
 
+
 // Update a user (Admin only)
 const updateUser = async (req, res) => {
   const { id } = req.params;
-  const { name, email, role } = req.body;
+  const { role } = req.body;
 
   try {
     const updatedUser = await User.findByIdAndUpdate(
       id,
-      { name, email, role },
+      { role },
       { new: true }
     );
 
@@ -49,4 +50,24 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { getUsers, updateUser, deleteUser };
+// Get a single user by ID
+const getUserById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Find the user by ID
+    const user = await User.findById(id)
+      .populate('companyProfile') // Populate companyProfile if needed
+      .populate('role'); // Populate role if needed
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ user });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+};
+
+module.exports = { getUsers, updateUser, deleteUser,getUserById };

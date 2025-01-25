@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 // Register a new user
 const register = async (req, res) => {
-  const { name, email, password, role } = req.body;
+  const { name, lastname, email, mobileNumber, password, role } = req.body;
 
   try {
     // Default to 'job_seeker' if no role is provided
@@ -19,7 +19,7 @@ const register = async (req, res) => {
     }
 
     // Create a new user with the role (default 'job_seeker' if not provided)
-    const newUser = new User({ name, email, password, role: userRole });
+    const newUser = new User({ name, lastname, email, mobileNumber, password, role: userRole });
     await newUser.save();
 
     res.status(201).json({ message: 'User registered successfully' });
