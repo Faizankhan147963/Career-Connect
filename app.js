@@ -13,6 +13,12 @@ connectDB();
 const app = express();
 app.use(express.json());
 
+
+app.get('/', (req, res) => {
+  res.send('Hello, Vercel!');
+});
+
+
 // Enable CORS for http://localhost:5173
 app.use(cors({
   origin: 'http://localhost:5173'
