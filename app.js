@@ -17,8 +17,10 @@ app.use(express.json());
 
 // Enable CORS for http://localhost:5173
 app.use(cors({
-  origin: 'http://localhost:5173'
+  origin: [process.env.FRONTEND_URL, 'http://localhost:5173'],
+  credentials: true
 }));
+
 
 // Use routes
 app.use('/api/auth', authRoutes);
