@@ -118,4 +118,41 @@ const deleteJob = async (req, res) => {
   }
 };
 
-module.exports = { createJob, getJobs, updateJob, deleteJob };
+const getJobsByUser = async (req, res) => {
+  const { userid } = req.params;
+
+  try {
+    // Fetch jobs posted by the specified user
+    const jobs = await Job.find({ postedBy: userid })
+      .populate('postedBy', 'name email') // Populate user details (optional)
+      .sort('-createdAt'); // Sort by latest jobs
+
+    // Check if jobs are found
+    if (!jobs.length) {
+      return res.status(404).json({ message: 'No jobs found for this user.' });
+    }
+
+    res.status(200).json({ jobs });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+};
+
+
+const getJobById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const job = await Job.findById(id).populate('postedBy', 'name email'); // Populate postedBy with name and email
+
+    if (!job) {
+      return res.status(404).json({ message: 'Job not found' });
+    }
+
+    res.status(200).json({ job });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+};
+module.exports = { createJob, getJobs, getJobsByUser, updateJob, deleteJob,getJobsByUser,getJobById };
+

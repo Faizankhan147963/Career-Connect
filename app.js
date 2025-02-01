@@ -1,45 +1,34 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
-const cors = require('cors');  // Import cors middleware
+const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const jobRoutes = require('./routes/jobRoutes');
 const profileRoutes = require('./routes/profileRoutes');
-const companyRoutes = require('./routes/companyRoutes'); // Import company routes
+const companyRoutes = require('./routes/companyRoutes');
+const savedJobsRoutes = require('./routes/savedJobsRoutes');
+const jobApplicationRoutes = require('./routes/jobApplicationRoutes');
 dotenv.config();
 connectDB();
 
 const app = express();
 app.use(express.json());
 
-
-app.get('/', (req, res) => {
-  res.send('Hello, Vercel!');
-});
-
-
 // Enable CORS for http://localhost:5173
-const allowedOrigins = ['http://localhost:5173', 'https://careerconnectin.netlify.app/'];
-
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  }
+  origin: 'http://localhost:5173'
 }));
 
-
-app.use('/api/auth', authRoutes);  // Auth routes (Sign up and login)
-app.use('/api/users', userRoutes);  // User management routes (CRUD for users, Admin only)
-app.use('/api/jobs', jobRoutes);  // Job listing routes (Admin and Recruiter)
+// Use routes
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/jobs', jobRoutes);
 app.use('/api/profiles', profileRoutes);
-app.use('/api/companies', companyRoutes);  // Company registration route
+app.use('/api/companies', companyRoutes);
+app.use('/api/saved-jobs', savedJobsRoutes);
+app.use('/api/applications', jobApplicationRoutes);
 
-// Server setup
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

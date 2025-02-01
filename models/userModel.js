@@ -3,28 +3,29 @@ const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  lastname: { type: String, required: true }, // Added lastname field
+  lastname: { type: String, required: true },
   email: { type: String, unique: true, required: true },
-  mobileNumber: { type: String, required: true }, // Added mobile number field
+  mobileNumber: { type: String, required: true },
   password: { type: String, required: true },
   role: { 
     type: String, 
     enum: ['job_seeker', 'recruiter', 'admin'], 
     required: true, 
     default: 'job_seeker' 
-  }, // Default role to 'job_seeker'
-  companyProfile: { type: mongoose.Schema.Types.ObjectId, ref: 'CompanyProfile' }, // Reference to company profile
+  },
+  companyProfile: { type: mongoose.Schema.Types.ObjectId, ref: 'CompanyProfile' },
 
-  // New status field
   status: { 
     type: String, 
     enum: ['active', 'rejected'], 
     required: true, 
     default: 'active' 
-  }
+  },
+
+  // New field for saved jobs
+  savedJobs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Job' }] // Array of job IDs
 });
 
-// Hash password before saving
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   this.password = await bcrypt.hash(this.password, 10);

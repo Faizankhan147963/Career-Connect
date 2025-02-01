@@ -125,10 +125,29 @@ const updateCompany = async (req, res) => {
   }
 };
 
+const getCompanyById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Find the company by its ID
+    const company = await Company.findById(id);
+
+    if (!company) {
+      return res.status(404).json({ message: 'Company not found' });
+    }
+
+    return res.status(200).json({ company });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Server error', error });
+  }
+};
+
 module.exports = { 
   registerCompany, 
   getCompanyByUserId, 
   getAllCompanies, 
   deleteCompany, 
-  updateCompany 
+  updateCompany,
+  getCompanyById, // Export the new function
 };
