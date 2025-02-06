@@ -59,4 +59,16 @@ const updateUserProfile = async (req, res) => {
   }
 };
 
-module.exports = { getUserProfile, createUserProfile, updateUserProfile };
+
+// Get all user profiles
+const getAllProfiles = async (req, res) => {
+  try {
+    const profiles = await UserProfile.find(); // Fetch all profiles
+    res.status(200).json({ profiles });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+};
+
+module.exports = { getAllProfiles, getUserProfile, createUserProfile, updateUserProfile };
+

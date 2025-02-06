@@ -213,3 +213,24 @@ exports.updateApplicationById = async (req, res) => {
     res.status(500).json({ message: 'Server error.' });
   }
 };
+
+
+exports.getLastFiveApplications = async (req, res) => {
+  try {
+    const applications = await JobApplication.find()
+      .sort({ createdAt: -1 }) // Sort by newest first
+      .limit(5) // Get only the last 5 applications
+      .populate('job', 'title description') // Populate job details
+      .populate('user', 'name email') // Populate user details
+      .exec();
+
+    if (!applications.length) {
+      return res.status(404).json({ message: 'No applications found.' });
+    }
+
+    res.status(200).json({ applications });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error.' });
+  }
+};

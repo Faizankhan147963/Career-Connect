@@ -1,9 +1,10 @@
-// Create a new route, controller, and model for user profile information
-
-// routes/profileRoutes.js
 const express = require('express');
-const { getUserProfile, createUserProfile, updateUserProfile } = require('../controllers/profileController');
+const { getAllProfiles, getUserProfile, createUserProfile, updateUserProfile } = require('../controllers/profileController');
+
 const router = express.Router();
+
+// Route to get all user profiles
+router.get('/', getAllProfiles);
 
 // Route to get a user's profile by ID
 router.get('/:id', getUserProfile);
