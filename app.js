@@ -17,10 +17,9 @@ app.use(express.json());
 
 // Enable CORS for http://localhost:5173
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173', 'https://careerconnectin.netlify.app'],
   credentials: true
 }));
-
 
 // Use routes
 app.use('/api/auth', authRoutes);
